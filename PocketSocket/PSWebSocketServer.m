@@ -150,6 +150,7 @@ void PSWebSocketServerAcceptCallback(CFSocketRef s, CFSocketCallBackType type, C
             }
             
             _addrData = [NSData dataWithBytes:&addr length:sizeof(addr)];
+            _isV6Address = YES;
         } else { // IPv4 address
             struct sockaddr_in addr;
             memset(&addr, 0, sizeof(addr));
@@ -165,7 +166,6 @@ void PSWebSocketServerAcceptCallback(CFSocketRef s, CFSocketCallBackType type, C
 
             _addrData = [NSData dataWithBytes:&addr length:sizeof(addr)];
         }
-        _isV6Address = isV6Address;
 
         // create socket context
         _socketContext = (CFSocketContext){0, (__bridge void *)self, NULL, NULL, NULL};
