@@ -613,9 +613,11 @@
         return;
     SecTrustRef trust = (__bridge SecTrustRef)[stream propertyForKey: (__bridge id)kCFStreamPropertySSLPeerTrust];
     NSAssert(trust != nil, @"Couldn't get SSL trust");
+    CFRetain(trust);
     [self executeDelegate:^{
         BOOL ok = [_delegate webSocket: self validateServerTrust: trust];
         [self executeWork:^{
+            CFRelease(trust);
             if (ok) {
                 _serverUnvalidated = NO;
                 [self pumpOutput];
